@@ -45,6 +45,9 @@ gameField.style.display = "flex";
 const PlayerHasPicked = document.createElement("div");
 PlayerHasPicked.textContent = "???";
 gameField.appendChild(PlayerHasPicked);
+const dividerPicks = document.createElement("div");
+dividerPicks.textContent = " : ";
+gameField.appendChild(dividerPicks)
 const ComputerHasPicked = document.createElement("div");
 ComputerHasPicked.textContent = "???";
 gameField.appendChild(ComputerHasPicked)
@@ -67,50 +70,73 @@ function getComputerChoice(){
     }
 }
 
-let userChoice = "";
-const rockButtonClicked = function(){
-    userChoice = "rock";
-    console.log(userChoice);
+// Rock Button
+rockButton.addEventListener("click", () => buttonClicked("rock")); 
+
+// Paper Button
+paperButton.addEventListener("click", () => buttonClicked("paper")); 
+
+// Scissors Button
+scissorsButton.addEventListener("click", () => buttonClicked("scissors")); 
+
+let playerChoice = "";
+let playerScore = 0;
+let computerScore = 0;
+
+const buttonClicked = function(playerChoice){
+    console.log(playerChoice);
+    computerChoice = getComputerChoice();
+    PlayerHasPicked.textContent = playerChoice;
+    ComputerHasPicked.textContent = computerChoice;
+    let winner = determineWinner(computerChoice, playerChoice);
+    increaseScore(winner);
+    checkIfSomebodyWon();
 };
 
+const increaseScore = function(winner){
+    if (winner === "player"){
+        playerScore += 1;
+        scoreBoardPlayer.textContent = playerScore;
+    } else if (winner === "computer"){
+        computerScore += 1;
+        scoreBoardComputer.textContent = computerScore;
+    } 
+}
 
-rockButton.addEventListener("click", rockButtonClicked); 
 
-
-
-
-
-
-
-/* function determineWinner(computerChoice, userChoice){
+function determineWinner(computerChoice, userChoice){
     if (computerChoice === userChoice){
-        return "No winner"
+        console.log("no winner")
+        return "no winner"
     } else if ((computerChoice === "rock" && userChoice === "scissors")|| 
     computerChoice === "paper" &&  userChoice === "rock" ||
     computerChoice === "scissors" &&  userChoice === "paper"){
-        return "Computer wins"
+        console.log("computer wins")
+        return "computer"
     } else {
-        return "You win"
+        console.log("you win")
+        return "player"
     }
-}     */
+}    
     
-/* function playRound(){
-    let userChoice = "";
-    let computerChoice = "";
 
-    let userInput = "no valid input";
-    while (!(userInput === "rock" || userInput === "paper" || userInput === "scissors")){
-        userInput = getUserChoice();
+function checkIfSomebodyWon(){
+    const currentComputerScore = parseInt(scoreBoardComputer.textContent);
+    const currentPlayerScore = parseInt(scoreBoardPlayer.textContent);
+    if (currentComputerScore === 3){
+        alert("COMPUTER WON");
+        resetScore();
+    } else if (currentPlayerScore === 3){
+        alert("PLAYER WON")
+        resetScore();
     }
+}
 
-    winner = "No winner"
-    while (winner === "No winner"){
-        winner = determineWinner(getComputerChoice(), userInput);
-        console.log(winner);
-        alert(winner);
-    }
-} */
-
-
+function resetScore(){
+    playerScore = 0;
+    scoreBoardPlayer.textContent = playerScore;
+    computerScore = 0;
+    scoreBoardComputer.textContent = computerScore;
+}
 
 
